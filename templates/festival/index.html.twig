@@ -1,0 +1,18 @@
+
+<h1>Lista Festivaluri</h1>
+
+{% if festivals is not empty %}
+    <ul>
+
+        {% for festival in festivals %}
+            <li>
+                <a href="{{ path('app_festival_show', {id: festival.id}) }}">
+                    {{ festival.nume }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+
+    <p>No festival found</p>
+{% endif %}

@@ -1,0 +1,13 @@
+<h1>Lineup</h1>
+
+<ul>
+    {% for artist in artists %}
+        <li>
+            <a href="{{ path('app_artist_show', {id: artist.id}) }}">
+                {{ artist.nume }}
+            </a>
+        </li>
+    {% else %}
+        <li>No artist found</li>
+    {% endfor %}
+</ul>

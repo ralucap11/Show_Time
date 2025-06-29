@@ -1,0 +1,13 @@
+<h1>Tickets</h1>
+
+<ul>
+    {% for purchase in purchases %}
+        <li>
+            <a href="{{ path('app_purchase_show', {id: purchase.id}) }}">
+                {{ purchase.user}}
+            </a>
+        </li>
+    {% else %}
+        <li>No puchase found</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,16 @@
+
+<h1>User Details</h1>
+ {%  for userDetail in users %}
+  <li>
+      <p>ID: {{ userDetail.id }}</p>
+      <p>Rol: {{ userDetail.userDetails.rol }}</p>
+      <p>Varsta: {{ userDetail.userDetails.varsta }}</p>
+  </li>
+{% else %}
+<p>No details found</p>
+{% endfor %}
+
+
+
+<p><a href="{{ path('app_user_index') }}">Back to users page</a></p>
+{# userDetail -> obiect de tip User, user OneToOne cu userDetails (getUserDetails) => User->UserDetails -> rol/varsta#}

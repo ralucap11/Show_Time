@@ -1,0 +1,22 @@
+
+  <h1>{{ festival.nume }}</h1>
+
+   <p>Start Date: {{ festival.startDate|date('d-m-Y') }}</p>
+  <p>End Date: {{ festival.endDate|date('d-m-Y') }}</p>
+  <p>Locatie: {{ festival.locatie }}</p>
+  <p>Pret: {{ festival.price }}</p>
+
+  <h2>Artists: </h2>
+  {% if artists is not empty %}
+      <ul>
+
+          {% for artist in artists %}
+
+              <li>{{ artist.nume }} - {{ artist.genMuzical }}</li>
+          {% endfor %}
+      </ul>
+  {% else %}
+      <p>There are no artists</p>
+  {% endif %}
+
+  <a href="{{ path('app_festival_index') }}">Back to festivals</a>

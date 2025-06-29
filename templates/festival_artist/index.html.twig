@@ -1,0 +1,14 @@
+
+
+{% for festival in festivals %}
+    <h2>{{ festival.nume }}</h2>
+    <ul>
+        {% for festivalArtist in festival.festivalArtists %}
+            <li>{{ festivalArtist.artist.nume}} – {{ festivalArtist.artist.gen_muzical }}</li>
+        {% else %}
+            <li>No artist found.</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>The festivals does not exist</p>
+{% endfor %}
