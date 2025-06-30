@@ -6,6 +6,15 @@
   <p>Locatie: {{ festival.locatie }}</p>
   <p>Pret: {{ festival.price }}</p>
 
+  <h2>Artists: </h2>
+
+  <ul>
+      {% for artist in festivalArtists %}
+          <li>{{ artist.getArtist.nume }}</li>
+      {% else %}
+          <li>There are no artists who sing at this festival</li>
+      {% endfor %}
+  </ul>
 
 
   <form method="delete" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
