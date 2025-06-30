@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Artist;
 use App\Entity\Festival;
 use App\Repository\FestivalRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,12 +24,26 @@ final class FestivalController extends AbstractController
     }
 
     #[Route('/festival/{id}', name: 'app_festival_show')]
-    public function show(Festival $festival, Artist $artists): Response
+    public function show(Festival $festival): Response
     {
+        $festivalArtists = $festival->getFestivalArtists();
+        $artists = [];
+
 
         return $this->render('festival/show.html.twig', [
             'festival' => $festival,
-             'artists' => $artists,  //?
+
         ]);
+    }
+
+    #[Route('/festival/delete/{id}', name: 'app_festival_delete', methods: ['GET'])]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    {     // dd($id);
+        $festival =  $entityManager->getRepository(Festival::class)->find($id);
+          $entityManager->remove($festival);
+     $entityManager->flush();
+
+        return $this->redirectToRoute('app_festival_index');
+
     }
 }

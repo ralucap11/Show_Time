@@ -3,3 +3,10 @@
 <h1>{{ purchase.user }}</h1>
 <p> Festival: {{ purchase.festival}}</p>
 <a href="{{ path('app_festival_index') }}">Back to festival</a>
+
+
+<form method="get" action="{{ path('app_purchase_delete', {'id': purchase.id}) }}">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+

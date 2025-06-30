@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,4 +30,14 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/user/delete/{id}', name: 'app_user_delete', methods: ['GET'])]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    {     // dd($id);
+        $user =  $entityManager->getRepository(User::class)->find($id);
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user_index');
+
+    }
 }

@@ -3,3 +3,10 @@
 <h1> Password: {{user.password}}</h1>
 
 <a href="{{ path('app_festival_index') }}">Back to festival</a>
+
+
+
+<form method="get" action="{{ path('app_user_delete', {'id': user.id}) }}">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>

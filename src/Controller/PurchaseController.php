@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Purchase;
 use App\Repository\PurchaseRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,4 +34,16 @@ final class PurchaseController extends AbstractController
             'purchase' => $purchase,
         ]);
     }
+
+    #[Route('/purchase/delete/{id}', name: 'app_purchase_delete', methods: ['GET'])]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $purchase =  $entityManager->getRepository(Purchase::class)->find($id);
+        $entityManager->remove($purchase);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_purchase_index');
+
+    }
+
 }
