@@ -17,10 +17,8 @@
   </ul>
 
 
-  <form method="delete" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
+  <form method="get" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
       <input type="hidden" name="_method" value="DELETE">
   <button type="submit" class="btn btn-danger">Delete</button>
   </form>
 
-
-  <a href="{{ path('app_festival_index') }}">Back to festivals</a>

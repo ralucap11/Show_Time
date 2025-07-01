@@ -19,7 +19,7 @@ class Festival
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nume = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $locatie = null;
 
     #[ORM\Column(type: 'datetime')]
@@ -61,7 +61,7 @@ class Festival
         return $this->locatie;
     }
 
-    public function setLocatie(string $locatie): static
+    public function setLocatie(?string $locatie): static
     {
         $this->locatie = $locatie;
         return $this;
@@ -94,7 +94,7 @@ class Festival
         return $this->price;
     }
 
-    public function setPrice(int $price): static
+    public function setPrice(?int $price): static
     {
         $this->price = $price;
         return $this;
