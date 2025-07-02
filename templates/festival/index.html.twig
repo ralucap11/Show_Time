@@ -1,8 +1,18 @@
+{% extends 'base.html.twig' %}
 
-<h1>Lista Festivaluri</h1>
+ {% block stylesheets %}
+
+     <link rel="stylesheet" href="/public/styles.css">
+
+ {% endblock %}
+
+{% block body %}
+
+<h1>Festival List</h1>
 
 {% if festivals is not empty %}
-    <ul>
+<table style="width:100%; border-collapse: collapse;">
+    <ul style="list-style-type:none;">
 
         {% for festival in festivals %}
             <li>
@@ -17,10 +27,8 @@
     <p>No festival found</p>
 {% endif %}
 
-
-<button type="button" class="btn btn-success" onclick="window.location.href='{{ path('app_festival_add_new') }}'">Add festival</button>
-
-
+    <button type="button" class="button2" onclick="window.location.href='{{ path('app_festival_add_new') }}'">Add festival</button>
+{% endblock %}
 
 
 

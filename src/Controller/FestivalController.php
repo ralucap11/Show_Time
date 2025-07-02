@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Festival;
 use App\Repository\FestivalRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Form\FormTypeInterface;
+use App\Form\FestivalForm;
 
 final class FestivalController extends AbstractController
 {
@@ -23,37 +28,41 @@ final class FestivalController extends AbstractController
         ]);
     }
 
-    #[Route('/festival/add', name: 'app_festival_add', methods: ['GET', 'POST'])]
+    #[Route('/festival/add_new_festival', name: 'app_festival_add_new', methods: ['GET', 'POST'])]
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     {
-        $nume = $request->request->get('nume');
-        $locatie = $request->request->get('locatie');
-        $start_date = $request->request->get('start_date');
-        $end_date = $request->request->get('end_date');
-        $price = $request->request->get('price');
 
-        $festival = new Festival();
-        $festival->setNume($nume);
-        $festival->setLocatie($locatie);
-        $festival->setStartDate(new DateTime($start_date));
-        $festival->setEndDate(new DateTime($end_date));
-        $festival->setPrice($price);
+          $task = new Festival();
+          $form = $this->createFormBuilder($task)
+            ->add('nume', TextType::class)
+            ->add('locatie',TextType ::class)
+              ->add('start_date',DateType ::class)
+              ->add('end_date',DateType ::class)
+              ->add('price',NumberType::class)
+            ->add('save', SubmitType::class, ['label' => 'Add festival'])
+            ->getForm();
 
+             $form->handleRequest($request);
+             if ($form->isSubmitted() && $form->isValid()) {
+                 $task = $form->getData();
+                $entityManager->persist($task);
+                $entityManager->flush();
+                 return $this->redirectToRoute('app_festival_index');
 
-        $entityManager->persist($festival);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_festival_index');
-    }
-
-    #[Route('/festival/add_new_festival', name: 'app_festival_add_new', methods: ['GET', 'POST'])]
-    public function newFestival(): Response
-    {
-
-        return $this->render('festival/add.html.twig', [
-
+             }
+           return $this->render('festival/add.html.twig', [
+               'form' => $form,
         ]);
     }
+
+//    #[Route('/festival/add_new_festival', name: 'app_festival_add_new', methods: ['GET', 'POST'])]
+//    public function newFestival(): Response
+//    {
+//
+//        return $this->render('festival/add.html.twig', [
+//
+//        ]);
+//    }
 
     #[Route('/festival/{id}', name: 'app_festival_show')]
     public function show(Festival $festival): Response
