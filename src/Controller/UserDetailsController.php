@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
+use App\Entity\UserDetails;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,7 @@ final class UserDetailsController extends AbstractController
     {
         $user = $userRepository->find($id);
 
+
         if (!$user) {
             throw $this->createNotFoundException('User not found');
         }
@@ -34,6 +37,16 @@ final class UserDetailsController extends AbstractController
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    #[Route('/user/{id}/details', name: 'app_user_details_show')]
+    public function showDetails(User  $user): Response
+    {
+
+        return $this->render('user_details/show.html.twig', [
+            'user' => $user,
+
+    ]);
     }
 
 

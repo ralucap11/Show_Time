@@ -13,15 +13,18 @@ class UserDetails
     #[ORM\Column]
     private ?int $id = null;
      //un user are un "detaliu"
-    #[ORM\OneToOne( inversedBy: 'userDetails' , targetEntity: User::class)]
+    #[ORM\OneToOne( targetEntity: User::class, inversedBy: 'userDetails')]
     #[ORM\JoinColumn( nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 25)]
+    #[ORM\Column(length: 25,nullable: true)]
     private ?string $rol = null;
 
     #[ORM\Column]
     private ?int $varsta = null;
+
+    #[ORM\Column(length: 28,nullable: true)]
+    private ?string $name = null;
 
 
     public function getId(): ?int
@@ -62,6 +65,18 @@ class UserDetails
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

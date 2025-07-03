@@ -4,16 +4,16 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[ORM\Table(name: '`user`')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-
 
     #[ORM\Column(length: 50)]
     private ?string $email = null;
@@ -21,7 +21,7 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: UserDetails::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?UserDetails $userDetails = null;
 
     public function getId(): ?int
@@ -58,5 +58,34 @@ class User
         return $this->userDetails;
     }
 
+    public function setUserDetails(?UserDetails $userDetails): static
+    {
+
+        if (null === $userDetails && null !== $this->userDetails) {
+            $this->userDetails->setUser(null);
+        }
+
+        if (null !== $userDetails && $userDetails->getUser() !== $this) {
+            $userDetails->setUser($this);
+        }
+
+        $this->userDetails = $userDetails;
+
+        return $this;
+    }
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials(): void
+    {
+
+    }
 
 }

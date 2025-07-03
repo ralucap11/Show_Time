@@ -6,7 +6,9 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -38,6 +40,26 @@ final class UserController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_user_index');
+
+    }
+
+
+    #[Route('/user', name: 'app_user_index')]
+    public function list(Request $request, PaginatorInterface $paginator,EntityManagerInterface $entityManager): Response
+    {
+        $queryBuilder = $entityManager->getRepository(User::class)->createQueryBuilder('e');
+
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('user/index.html.twig', [
+            'pagination' => $pagination,
+            'users' => $pagination,
+        ]);
+
 
     }
 }

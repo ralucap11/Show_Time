@@ -17,7 +17,7 @@ class FestivalArtist
     #[ORM\JoinColumn(nullable: false)]
     private ?Festival $festival = null;
 
-    #[ORM\ManyToOne(targetEntity: Artist::class)]
+    #[ORM\ManyToOne(targetEntity: Artist::class, inversedBy: 'festivals')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Artist $artist = null;
 

@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Festival;
 use App\Repository\FestivalRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -13,8 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Form\FormTypeInterface;
-use App\Form\FestivalForm;
 
 final class FestivalController extends AbstractController
 {
@@ -55,14 +53,6 @@ final class FestivalController extends AbstractController
         ]);
     }
 
-//    #[Route('/festival/add_new_festival', name: 'app_festival_add_new', methods: ['GET', 'POST'])]
-//    public function newFestival(): Response
-//    {
-//
-//        return $this->render('festival/add.html.twig', [
-//
-//        ]);
-//    }
 
     #[Route('/festival/{id}', name: 'app_festival_show')]
     public function show(Festival $festival): Response
@@ -87,6 +77,26 @@ final class FestivalController extends AbstractController
         return $this->redirectToRoute('app_festival_index');
 
     }
+
+    #[Route('/festival', name: 'app_festival_index')]
+    public function list(Request $request, PaginatorInterface $paginator,EntityManagerInterface $entityManager): Response
+    {
+        $queryBuilder = $entityManager->getRepository(Festival::class)->createQueryBuilder('e');
+
+             $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $this->render('festival/index.html.twig', [
+            'pagination' => $pagination,
+            'festivals' => $pagination,
+        ]);
+
+
+    }
+
 
 
 }
