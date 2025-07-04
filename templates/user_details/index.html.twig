@@ -1,9 +1,18 @@
+{% block stylesheets %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+{% endblock %}
+
+
 <h1>User Details</h1>
 {% for userDetail in users %}
+<ul style="list-style-type:none;">
+
     <li>
         <p>ID: {{ userDetail.id }}</p>
 
-        {% if userDetail.userDetails is not null %}    {# without it => Impossible to access an attribute ("rol") on a null variable#}
+        {% if userDetail.userDetails is not null %}
             <p>Rol: {{ userDetail.userDetails.rol }}</p>
             <p>Varsta: {{ userDetail.userDetails.varsta }}</p>
             <p>Name: {{ userDetail.userDetails.name }}</p>
@@ -11,9 +20,11 @@
             <p>Details: Not available</p>
         {% endif %}
     </li>
+</ul>
 {% else %}
     <p>No users found</p>
 {% endfor %}
 
-<p><a href="{{ path('app_user_index') }}">Back to users page</a></p>
 {# userDetail -> obiect de tip User, user OneToOne cu userDetails (getUserDetails) => User->UserDetails -> rol/varsta#}
+<button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_user_index') }}'">Back to user</button>
+
