@@ -94,8 +94,34 @@ final class FestivalController extends AbstractController
             'festivals' => $pagination,
         ]);
 
-
     }
+
+    #[Route('/festival/{id}/edit', name: 'app_festival_edit')]
+    public function edit(Festival $festival, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createFormBuilder($festival)
+            ->add('nume', TextType::class)
+            ->add('locatie',TextType ::class)
+            ->add('start_date',DateType ::class)
+            ->add('end_date',DateType ::class)
+            ->add('price',NumberType::class)
+            ->add('save', SubmitType::class, ['label' => 'modify festival'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'festival modified');
+            return $this->redirectToRoute('app_festival_index');
+        }
+
+        return $this->render('festival/edit.html.twig', [
+            'form' => $form->createView(),
+            'festival' => $festival,
+        ]);
+    }
+
 
 
 
