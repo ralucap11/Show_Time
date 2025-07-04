@@ -1,0 +1,14 @@
+
+<h1>User ID: {{ user.id }}</h1>
+
+<li>
+    <p>ID: {{ user.id }}</p>
+    <p>Rol: {{ user.userDetails.rol|default('N/A') }}</p>
+    <p>Varsta: {{ user.userDetails.varsta|default('N/A') }}</p>
+    <p>Name: {{ user.userDetails.name|default('N/A') }}</p>
+</li>
+
+<button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_user_index') }}'">Back to users</button>
+
+
+{#default filter for null-safe, not .? #}
