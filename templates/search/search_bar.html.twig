@@ -1,0 +1,13 @@
+{# templates/_search_bar.html.twig #}
+{% if form is defined %}
+    <form action="{{ form.vars.action }}" method="{{ form.vars.method }}" class="search-form">
+        {{ form_widget(form.query, {'attr': {
+            'class': 'search-input',
+            'placeholder': 'Search...'
+        }}) }}
+        <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+        </button>
+        {{ form_rest(form) }}
+    </form>
+{% endif %}

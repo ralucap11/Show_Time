@@ -12,7 +12,9 @@
     {% endblock %}
 </head>
 <body>
-
+<header>
+    {{ render(controller('App\\Controller\\SearchController::index')) }}
+</header>
 
 
 {% block body %}{% endblock %}

@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+handle_search:
+    path: /search
+    controller: App\Controller\SearchController::handleSerch
+    methods: GET
+

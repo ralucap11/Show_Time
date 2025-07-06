@@ -1,29 +1,91 @@
 {% block stylesheets %}
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+ <style>
+     .btn-primary {
+         display: inline-block;
+         outline: none;
+         cursor: pointer;
+         font-size: 14px;
+         line-height: 1;
+         border-radius: 500px;
+         transition-property: background-color, border-color, color, box-shadow, filter;
+         transition-duration: .3s;
+         border: 1px solid transparent;
+         letter-spacing: 2px;
+         min-width: 160px;
+         text-transform: uppercase;
+         white-space: normal;
+         font-weight: 700;
+         text-align: center;
+         padding: 16px 14px 18px;
+         color: black;
+         background-color: #6D28D9;
+         height: 48px;
+         margin: 0;
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         -ms-transform: translate(-50%, -50%);
+         transform: translate(-50%, -50%);
+     }
+     .festival-header {
+         margin-top: 30px;
+         margin-left: 20px;
+         font-size: 2.5rem;
+         font-weight: bold;
+         padding: 16px 14px 18px;
+         color: black;
+     }
+     .btn-delete {
+         background-color: #dc3545;
+         color: white;
+         padding: 16px 14px 18px;
+         color: black;
+         border-radius: 5px;
+         border: none;
+         font-weight: bold;
+         margin-top: 60px;
+     }
+     .title{
+         text-align: center;
+         vertical-align: center;
+     }
 
+     .festival-details {
+         margin-left: 30px;
+         font-size: 1.1rem;
+         line-height: 1.6;
+     }
+     .no-artists {
+         font-style: italic;
+         color: #666;
+         margin-top: 10px;
+     }
+ </style>
 {% endblock %}
-  <h1>{{ festival.nume }}</h1>
+<div class="festival-details">
+  <h1 class="festival-header">{{ festival.nume }}</h1>
 
    <p>Start Date: {{ festival.startDate|date('d-m-Y') }}</p>
   <p>End Date: {{ festival.endDate|date('d-m-Y') }}</p>
   <p>Locatie: {{ festival.locatie }}</p>
   <p>Pret: {{ festival.price }}</p>
-
-  <h2>Artists: </h2>
+</div>
+  <h2 class="festival-header">Artists: </h2>
 
   <ul>
       {% for artist in festivalArtists %}
           <li>{{ artist.getArtist.nume }}</li>
       {% else %}
-          <li>There are no artists who sing at this festival</li>
+          <li class="no-artists">There are no artists who sing at this festival</li>
       {% endfor %}
   </ul>
 
 
   <form method="get" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
       <input type="hidden" name="_method" value="DELETE">
-  <button type="submit" class="btn btn-danger">Delete</button>
+  <button type="submit" class="btn-delete">Delete</button>
   </form>
 
 <button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_festival_edit', {'id': festival.id}) }}'">Modify festival</button>
