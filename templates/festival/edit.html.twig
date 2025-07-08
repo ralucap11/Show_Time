@@ -1,12 +1,90 @@
+{% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Quicksand', sans-serif;
+            background-image: url("https://i.pinimg.com/736x/c6/f6/91/c6f691da74c3b637435b1e14099edc49.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        .festival-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            position: relative;
+        }
+        .festival-header {
+            color: black;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 2.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #6D28D9;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: #5b21b6;
+        }
+        .btn-secondary {
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
 
-<h1> Modify festival</h1>
+{% block body %}
+    <div class="festival-container">
+        <h1 class="festival-header">Edit Festival</h1>
 
-{{ form (form) }}
+        {{ form_start(form) }}
 
+        <div class="form-group">
+            {{ form_label(form.nume) }}
+            {{ form_widget(form.nume, {'attr': {'class': 'form-control'}}) }}
+        </div>
 
+        <div class="form-group">
+            {{ form_label(form.start_date) }}
+            {{ form_widget(form.start_date, {'attr': {'class': 'form-control'}}) }}
+        </div>
 
+        <div class="form-group">
+            {{ form_label(form.end_date) }}
+            {{ form_widget(form.end_date, {'attr': {'class': 'form-control'}}) }}
+        </div>
 
+        <div class="form-group">
+            {{ form_label(form.locatie) }}
+            {{ form_widget(form.locatie, {'attr': {'class': 'form-control'}}) }}
+        </div>
 
+        <div class="form-group">
+            {{ form_label(form.price) }}
+            {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.price) }}
+        </div>
 
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ path('app_festival_index') }}" class="btn btn-secondary">Back</a>
+        </div>
 
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

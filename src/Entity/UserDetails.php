@@ -81,6 +81,10 @@ class UserDetails
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->name ?? '';  // for the error->object of class Proxies\__CG__\App\Entity\User could not be converted to string
+    }
 
 
 

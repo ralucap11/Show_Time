@@ -106,6 +106,9 @@ class Festival
         return $this->festivalArtists;
     }
 
-
+    public function __toString(): string
+    {
+        return $this->nume ?? '';  //for the error->Object of class Proxies\__CG__\App\Entity\Festival could not be converted to string
+    }
 
 }

@@ -37,8 +37,7 @@ final class FestivalController extends AbstractController
               ->add('start_date',DateType ::class)
               ->add('end_date',DateType ::class)
               ->add('price',NumberType::class)
-            ->add('save', SubmitType::class, ['label' => 'Add festival'])
-            ->getForm();
+              ->getForm();
 
              $form->handleRequest($request);
              if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +85,7 @@ final class FestivalController extends AbstractController
              $pagination = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1),
-            5
+            6
         );
 
         return $this->render('festival/index.html.twig', [
@@ -105,7 +104,6 @@ final class FestivalController extends AbstractController
             ->add('start_date',DateType ::class)
             ->add('end_date',DateType ::class)
             ->add('price',NumberType::class)
-            ->add('save', SubmitType::class, ['label' => 'modify festival'])
             ->getForm();
 
         $form->handleRequest($request);

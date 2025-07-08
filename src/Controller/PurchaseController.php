@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Festival;
 use App\Entity\Purchase;
+use App\Entity\User;
+use App\Repository\FestivalRepository;
 use App\Repository\PurchaseRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,29 +15,31 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class PurchaseController extends AbstractController
 {
-    #[Route('/purchase', name: 'app_purchase_index')]
+    #[Route('/purchase', name: 'app_purchase_index', methods: ['GET'])]
     public function index(PurchaseRepository $purchaseRepository): Response
     {
-        $purchases= $purchaseRepository->findAll();
-
         return $this->render('purchase/index.html.twig', [
-            'purchases' => $purchases,
+            'purchases' => $purchaseRepository->findAll()
         ]);
     }
 
-    #[Route('/purchase/{id}', name: 'app_purchase_show')]
-    public function show(int $id, PurchaseRepository $purchaseRepository): Response
-    {
-        $purchase = $purchaseRepository->find($id);
 
-        if (!$purchase) {
-            throw $this->createNotFoundException('Purchase not found');
+
+    #[Route('/purchase/user/{id}', name: 'app_user_purchase_show', methods: ['GET'])]
+    public function show(int $id, EntityManagerInterface $entityManager): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
+        if (!$user) {
+            throw $this->createNotFoundException();
         }
+        $purchase = $user->getPurchases();
 
         return $this->render('purchase/show.html.twig', [
+            'user' => $user,
             'purchase' => $purchase,
         ]);
     }
+
 
     #[Route('/purchase/delete/{id}', name: 'app_purchase_delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $entityManager, int $id): Response
@@ -44,6 +50,48 @@ final class PurchaseController extends AbstractController
 
         return $this->redirectToRoute('app_purchase_index');
 
+    }
+
+    #[Route('/purchase/create/{festival_id}', name: 'app_purchase_create', methods: ['GET'])]
+    public function create(int $festival_id, EntityManagerInterface $em, FestivalRepository $festivalRepo): Response {
+        $festival = $festivalRepo->find($festival_id);
+
+        if (!$festival) {
+            throw $this->createNotFoundException('Festival not found');
+        }
+
+        $purchase = new Purchase();
+        $purchase->setFestival($festival);
+        $purchase->setUser($this->getUser());
+        $purchase->setPurchaseDate(new \DateTime());
+
+        $em->persist($purchase);
+        $em->flush();
+
+        $this->addFlash('success', 'Ticket purchased successfully!');
+        return $this->redirectToRoute('app_festival_index');
+    }
+
+
+
+    #[Route('/purchase/confirm/{festival_id}', name: 'app_purchase_confirm', methods: ['GET'])]
+    public function confirm(EntityManagerInterface $entityManager, int $festival_id): Response
+    {
+        $festival = $entityManager->getRepository(Festival::class)->find($festival_id);
+        $user=$this->getUser();
+        if(!$festival) {
+            throw $this->createNotFoundException('Festival not found');
+        }
+
+        if(!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        return $this->render('purchase/confirm.html.twig', [
+            'festival' => $festival,
+             'user' => $user
+
+        ]);
     }
 
 }

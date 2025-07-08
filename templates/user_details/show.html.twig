@@ -1,14 +1,103 @@
+{% extends 'base.html.twig' %}
 
-<h1>User ID: {{ user.id }}</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .title {
+            color: black;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 2.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+        .detail-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            align-items: center;
+        }
+        .detail-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #555;
+            font-size: 1rem;
+        }
+        .detail-value {
+            font-size: 1.1rem;
+            color: #333;
+            flex-grow: 1;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        .btn-primary {
+            background-color: #6D28D9;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #5b21b6;
+        }
+    </style>
+{% endblock %}
 
-<li>
-    <p>ID: {{ user.id }}</p>
-    <p>Rol: {{ user.userDetails.rol|default('N/A') }}</p>
-    <p>Varsta: {{ user.userDetails.varsta|default('N/A') }}</p>
-    <p>Name: {{ user.userDetails.name|default('N/A') }}</p>
-</li>
+{% block body %}
+    <div class="container py-5">
+        <h1 class="title">User Profile</h1>
 
-<button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_user_index') }}'">Back to users</button>
+        <div class="detail-item">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">{{ user.id }}</span>
+        </div>
 
+        <div class="detail-item">
+            <span class="detail-label">Role:</span>
+            <span class="detail-value">{{ user.userDetails.rol|default('N/A') }}</span>
+        </div>
 
-{#default filter for null-safe, not .? #}
+        <div class="detail-item">
+            <span class="detail-label">Age:</span>
+            <span class="detail-value">{{ user.userDetails.varsta|default('N/A') }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Name:</span>
+            <span class="detail-value">{{ user.userDetails.name|default('N/A') }}</span>
+        </div>
+
+        <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ user.email }}</span>
+        </div>
+
+        <div class="action-buttons">
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_festival_index') }}'">
+                <i class="fas fa-arrow-left me-2"></i> Back to Festivals</button>
+        </div>
+    </div>
+{% endblock %}
+

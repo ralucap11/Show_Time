@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -27,14 +29,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: UserDetails::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?UserDetails $userDetails = null;
 
+    #[ORM\OneToMany(targetEntity: Purchase::class, mappedBy: 'user')]
+    private Collection $purchases;
     #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    public function __construct()
+    {
+        $this->purchases = new ArrayCollection();
+    }
     public function getEmail(): ?string
     {
         return $this->email;
@@ -109,12 +118,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function getPurchases(): Collection
+    {
+        return $this->purchases;
+    }
+
+    public function addPurchase(Purchase $purchase): static
+    {
+        if (!$this->purchases->contains($purchase)) {
+            $this->purchases->add($purchase);
+            $purchase->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removePurchase(Purchase $purchase): static
+    {
+        if ($this->purchases->contains($purchase)) {
+            $this->purchases->removeElement($purchase);
+            $purchase->setUser(null);
+        }
+        return  $this;
+    }
 
     public function eraseCredentials(): void
     {
 
     }
-
+    public function __toString(): string
+    {
+        return $this->name ?? '';  // for the error->object of class Proxies\__CG__\App\Entity\User could not be converted to string
+    }
 
 }
 

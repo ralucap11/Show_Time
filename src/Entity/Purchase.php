@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PurchaseRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
@@ -13,37 +14,54 @@ class Purchase
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 28)]
-    private ?string $user = null;
+     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'purchases')]
+     #[ORM\JoinColumn(nullable: false)]
+     private ?User $user = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $festival = null;
 
+    #[ORM\ManyToOne(targetEntity: Festival::class, inversedBy: 'purchases')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Festival $festival = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $purchase_date = null;
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser(): ?string
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(string $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
+    public function getPurchaseDate(): ?DateTimeInterface
+    {
+        return $this->purchase_date;
+    }
+
+    public function setPurchaseDate(DateTimeInterface $purchase_date): static
+    {
+        $this->purchase_date = $purchase_date;
+        return $this;
+    }
+
+
 
     //pentru purchase/1 purchase/id
-    public function getFestival(): ?string
+    public function getFestival(): ?Festival
     {
         return $this->festival;
     }
 
-    public function setFestival(string $festival): static
+    public function setFestival(?Festival $festival): static
     {
         $this->festival = $festival;
 

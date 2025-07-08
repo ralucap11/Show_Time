@@ -46,12 +46,12 @@ class Artist
         return $this;
     }
 
-    public function getGen_Muzical(): ?string
+    public function getGenMuzical(): ?string
     {
         return $this->gen_muzical;
     }
 
-    public function setGen_Muzical(string $gen_muzical): static
+    public function setGenMuzical(string $gen_muzical): static
     {
         $this->gen_muzical = $gen_muzical;
 

@@ -1,7 +1,5 @@
-
-
 <h1>{{ artist.nume }}</h1>
-<p> Gen muzical: {{ artist.gen_muzical }}</p>
+<p> Gen muzical: {{ artist.genMuzical }}</p>
 <a href="{{ path('app_artist_index') }}">Back to lineup</a>
 
 
@@ -10,5 +8,3 @@
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit" class="btn btn-danger">Delete</button>
 </form>
-
-

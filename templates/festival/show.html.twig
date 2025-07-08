@@ -1,94 +1,151 @@
 {% block stylesheets %}
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
- <style>
-     .btn-primary {
-         display: inline-block;
-         outline: none;
-         cursor: pointer;
-         font-size: 14px;
-         line-height: 1;
-         border-radius: 500px;
-         transition-property: background-color, border-color, color, box-shadow, filter;
-         transition-duration: .3s;
-         border: 1px solid transparent;
-         letter-spacing: 2px;
-         min-width: 160px;
-         text-transform: uppercase;
-         white-space: normal;
-         font-weight: 700;
-         text-align: center;
-         padding: 16px 14px 18px;
-         color: black;
-         background-color: #6D28D9;
-         height: 48px;
-         margin: 0;
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         -ms-transform: translate(-50%, -50%);
-         transform: translate(-50%, -50%);
-     }
-     .festival-header {
-         margin-top: 30px;
-         margin-left: 20px;
-         font-size: 2.5rem;
-         font-weight: bold;
-         padding: 16px 14px 18px;
-         color: black;
-     }
-     .btn-delete {
-         background-color: #dc3545;
-         color: white;
-         padding: 16px 14px 18px;
-         color: black;
-         border-radius: 5px;
-         border: none;
-         font-weight: bold;
-         margin-top: 60px;
-     }
-     .title{
-         text-align: center;
-         vertical-align: center;
-     }
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Quicksand', sans-serif;
+            background-image: url("https://i.pinimg.com/736x/c6/f6/91/c6f691da74c3b637435b1e14099edc49.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height:  100vh;
+        }
+        .festival-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            position: relative;
+        }
+        .festival-header {
+            color: black;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 2.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+        .festival-details {
+            margin-bottom: 40px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .detail-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #555;
+        }
+        .artists-section {
+            margin: 30px 0;
+        }
+        .artists-list {
+            list-style: none;
+            padding: 0;
+        }
+        .artists-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .no-artists {
+            font-style: normal;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #6D28D9;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-primary:hover {
+            background-color: #5b21b6;
+        }
 
-     .festival-details {
-         margin-left: 30px;
-         font-size: 1.1rem;
-         line-height: 1.6;
-     }
-     .no-artists {
-         font-style: italic;
-         color: #666;
-         margin-top: 10px;
-     }
- </style>
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        .price-badge {
+            background-color: #6D28D9;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+    </style>
 {% endblock %}
-<div class="festival-details">
-  <h1 class="festival-header">{{ festival.nume }}</h1>
 
-   <p>Start Date: {{ festival.startDate|date('d-m-Y') }}</p>
-  <p>End Date: {{ festival.endDate|date('d-m-Y') }}</p>
-  <p>Locatie: {{ festival.locatie }}</p>
-  <p>Pret: {{ festival.price }}</p>
+<div class="festival-container">
+    <h1 class="festival-header">{{ festival.nume }}</h1>
+
+    <div class="festival-details">
+        <div class="detail-row">
+            <span class="detail-label">Start Date:</span>
+            <span>{{ festival.startDate|date('d-m-Y') }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">End Date:</span>
+            <span>{{ festival.endDate|date('d-m-Y') }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Location:</span>
+            <span>{{ festival.locatie }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Price:</span>
+            <span class="price-badge">{{ festival.price }} lei</span>
+        </div>
+    </div>
+
+    <div class="artists-section">
+        <h3 class="text-center mb-4">Featured Artists</h3>
+        <ul class="artists-list">
+            {% for artist in festivalArtists %}
+                <li>{{ artist.getArtist.nume }}</li>
+            {% else %}
+                <li class="no-artists">There are no artists performing at this festival</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="action-buttons">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_festival_edit', {'id': festival.id}) }}'">
+            Edit Festival
+        </button>
+        <button type="button" class="btn btn-primary"
+                onclick="window.location.href='{{ path('app_festival_artist_add', {'id': festival.id}) }}'">
+            Add Artist
+        </button>
+        <form action="{{ path('app_purchase_confirm', {'festival_id': festival.id}) }}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-ticket-alt me-2"></i> Buy Ticket
+            </button>
+        </form>
+        <form method="get" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+    </div>
 </div>
-  <h2 class="festival-header">Artists: </h2>
-
-  <ul>
-      {% for artist in festivalArtists %}
-          <li>{{ artist.getArtist.nume }}</li>
-      {% else %}
-          <li class="no-artists">There are no artists who sing at this festival</li>
-      {% endfor %}
-  </ul>
-
-
-  <form method="get" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
-      <input type="hidden" name="_method" value="DELETE">
-  <button type="submit" class="btn-delete">Delete</button>
-  </form>
-
-<button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_festival_edit', {'id': festival.id}) }}'">Modify festival</button>
-
-
-
