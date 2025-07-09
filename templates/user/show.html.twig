@@ -14,17 +14,18 @@
 <h1> Password: {{user.password}}</h1>
 
 
-
+{% if is_granted('ROLE_ADMIN') %}
 <form method="get" action="{{ path('app_user_delete', {'id': user.id}) }}">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit" class="btn btn-danger">Delete</button>
 </form>
-
+{% endif %}
 
 <button type="button"
         onclick="window.location.href='{{ path('app_user_details_show', {'id': user.id}) }}'">
     user details
 </button>
+
 
 <button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_festival_index') }}'">Back to festival</button>
 

@@ -21,12 +21,14 @@ class UserDetails
     private ?string $rol = null;
 
     #[ORM\Column]
-    private ?int $varsta = null;
+    private ?int $varsta = 0;
 
     #[ORM\Column(length: 28,nullable: true)]
     private ?string $name = null;
 
-
+//    $user = $userRepository->find($user->getId());
+//    #[ORM\Column]
+//     private ?int $numberPurchase = 0;
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +88,15 @@ class UserDetails
         return $this->name ?? '';  // for the error->object of class Proxies\__CG__\App\Entity\User could not be converted to string
     }
 
-
+//  public function getNumberPurchase(): ?int
+//  {
+//      return $this->numberPurchase;
+//  }
+//
+//  public function setNumberPurchase(?int $numberPurchase): static
+//  {
+//      $this->numberPurchase = $numberPurchase;
+//      return $this;
+//  }
 
 }

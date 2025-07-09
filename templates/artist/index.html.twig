@@ -38,6 +38,7 @@
         <li>No artist found</li>
     {% endfor %}
 </ul>
-
+{% if is_granted('ROLE_ADMIN') %}
 <button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_artist_add_new') }}'">Add artist</button>
+{% endif %}
 </body>

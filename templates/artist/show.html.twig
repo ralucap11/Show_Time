@@ -3,8 +3,9 @@
 <a href="{{ path('app_artist_index') }}">Back to lineup</a>
 
 
-
+{% if is_granted('ROLE_ADMIN') %}
 <form method="get" action="{{ path('app_artist_delete', {'id': artist.id}) }}">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit" class="btn btn-danger">Delete</button>
 </form>
+{% endif %}

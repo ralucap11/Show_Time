@@ -23,9 +23,11 @@
         <li>No users found</li>
     {% endfor %}
 </ul>
+     {% if  is_granted('ROLE_ADMIN') %}
+    <button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_user_add_new') }}'">Add user</button>
+    {% endif %}
 
-
-<div class="navigation">
+    <div class="navigation">
     {{ knp_pagination_render(pagination) }}
 </div>
 

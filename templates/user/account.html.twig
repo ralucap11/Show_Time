@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>My Account</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <div class="detail-item">
+                    <span class="detail-label">Name:</span>
+                    <span class="detail-value">{{ user.userDetails.name|default('N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Role:</span>
+                    <span class="detail-value">{{ user.userDetails.rol|default('N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Age:</span>
+                    <span class="detail-value">{{ user.userDetails.varsta|default('N/A') }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">ID:</span>
+                    <span class="detail-value">{{ user.id }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

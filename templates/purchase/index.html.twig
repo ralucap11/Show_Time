@@ -56,6 +56,7 @@
         <div class="row">
             {% for purchase in purchases %}
                 <div class="col-md-6 mb-4">
+
                     <div class="purchase-card clickable-card"  onclick="window.location='{{ path('app_user_details_show', {id: purchase.user.id}) }}'"
                     style="cursor: pointer">
 
@@ -63,7 +64,7 @@
                         <div class="festival-details">
                             <div class="detail-row">
                                 <span class="detail-label">User:</span>
-{#                                <span>{{  purchase.user.email }}</span>#}
+                                <span>{{  purchase.user.email }}</span>
                             </div>
 
                             <div class="detail-row">

@@ -8,3 +8,6 @@ handle_search:
     controller: App\Controller\SearchController::handleSerch
     methods: GET
 
+app_home:
+    path: /
+    controller: App\Controller\HomeController::index

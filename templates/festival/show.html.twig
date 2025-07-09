@@ -131,21 +131,27 @@
     </div>
 
     <div class="action-buttons">
+        {% if is_granted('ROLE_ADMIN') %}
         <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_festival_edit', {'id': festival.id}) }}'">
             Edit Festival
         </button>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
         <button type="button" class="btn btn-primary"
                 onclick="window.location.href='{{ path('app_festival_artist_add', {'id': festival.id}) }}'">
             Add Artist
         </button>
+        {% endif %}
         <form action="{{ path('app_purchase_confirm', {'festival_id': festival.id}) }}" method="get" style="display: inline;">
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-ticket-alt me-2"></i> Buy Ticket
             </button>
         </form>
+        {% if is_granted('ROLE_ADMIN') %}
         <form method="get" action="{{ path('app_festival_delete', {'id': festival.id}) }}">
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="btn btn-primary">Delete</button>
         </form>
+        {% endif %}
     </div>
 </div>

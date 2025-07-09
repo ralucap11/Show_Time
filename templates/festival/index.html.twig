@@ -144,7 +144,8 @@
     {% else %}
         <p>No festival found</p>
     {% endif %}
-
+    {% if is_granted('ROLE_ADMIN') %}
     <button type="button" class="btn-primary" onclick="window.location.href='{{ path('app_festival_add_new') }}'">Add festival</button>
     </body>
+    {% endif %}
 {% endblock %}

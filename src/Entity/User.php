@@ -98,14 +98,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = [];
 
         if ($this->userDetails && $this->userDetails->getRol()) {
-            $roles[] = $this->userDetails->getRol();
+            $dbRole = strtoupper($this->userDetails->getRol());
+
+            $roles[] = str_starts_with($dbRole, 'ROLE_') ? $dbRole : 'ROLE_' . $dbRole;
         }
 
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
-
     }
+
 
     public function isVerified(): bool
     {
