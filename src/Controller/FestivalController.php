@@ -8,7 +8,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +36,7 @@ final class FestivalController extends AbstractController
               ->add('start_date',DateType ::class)
               ->add('end_date',DateType ::class)
               ->add('price',NumberType::class)
+              ->add('numberTickets',NumberType::class)
               ->getForm();
 
              $form->handleRequest($request);
@@ -48,7 +48,7 @@ final class FestivalController extends AbstractController
 
              }
            return $this->render('festival/add.html.twig', [
-               'form' => $form,
+               'form' => $form->createView(),
         ]);
     }
 
@@ -104,6 +104,7 @@ final class FestivalController extends AbstractController
             ->add('start_date',DateType ::class)
             ->add('end_date',DateType ::class)
             ->add('price',NumberType::class)
+            ->add('numberTickets',NumberType::class)
             ->getForm();
 
         $form->handleRequest($request);
@@ -119,11 +120,5 @@ final class FestivalController extends AbstractController
             'festival' => $festival,
         ]);
     }
-
-
-
-
-
-
 
 }

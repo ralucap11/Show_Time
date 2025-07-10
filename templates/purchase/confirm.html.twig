@@ -45,9 +45,45 @@
             <p><strong>Date:</strong> {{ festival.startDate|date('d-m-Y') }} - {{ festival.endDate|date('d-m-Y') }}</p>
             <p><strong>Price:</strong> {{ festival.price }} lei</p>
         </div>
-
-        <form method="GET" action="{{ path('app_purchase_create', {'festival_id': festival.id}) }}">
-            <button type="submit" class="btn btn-confirm d-block mx-auto">Confirm</button>
+        <form method="GET" action="{{ path('app_purchase_create', {'festival_id': festival.id}) }}" onsubmit="return validateQuantity()">
+            <div class="form-group">
+                <label for="quantity"><strong>Number of Tickets:</strong></label>
+                <input type="number"
+                       id="quantity"
+                       name="quantity"
+                       class="form-control"
+                       min="1"
+                       max="{{ festival.numberTickets }}"
+                       value="1"
+                       required
+                       onchange="updateTotalPrice({{ festival.price }})">
+                <p id="totalPrice"><strong>Total:</strong> {{ festival.price }} lei</p>
+            </div>
+            <button type="submit" class="btn btn-confirm d-block mx-auto">Confirm Purchase</button>
         </form>
+        <script>
+            function updateTotalPrice(pricePerTicket) {
+                const quantity = document.getElementById('quantity').value;
+                const total = quantity * pricePerTicket;
+                document.getElementById('totalPrice').innerHTML = `<strong>Total:</strong> ${total} lei`;
+            }
+
+            function validateQuantity() {
+                const quantity = parseInt(document.getElementById('quantity').value);
+                const maxTickets = parseInt({{ festival.numberTickets }});
+
+                if (quantity < 1) {
+                    alert('Please select at least 1 ticket');
+                    return false;
+                }
+
+                if (quantity > maxTickets) {
+                    alert(`Only ${maxTickets} tickets available`);
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
     </div>
 {% endblock %}

@@ -25,6 +25,14 @@ class Purchase
 
     #[ORM\Column(type: 'datetime')]
     private ?DateTimeInterface $purchase_date = null;
+
+
+    #[ORM\Column]
+    private ?int $tickets = 0;
+
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -67,4 +75,17 @@ class Purchase
 
         return $this;
     }
+
+    private function getTickets(): int
+    {
+       return $this->tickets;
+    }
+
+    public function setTickets(int $tickets): static
+    {
+        $this->tickets = $tickets;
+        return $this;
+    }
+
+
 }

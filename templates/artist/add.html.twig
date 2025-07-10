@@ -59,6 +59,11 @@
             margin-top: 0.5rem;
             width: 100%;
         }
+
+        .image-upload-container{
+            margin-bottom: 1.5rem;
+        }
+
     </style>
 {% endblock %}
 
@@ -81,7 +86,12 @@
             {{ form_widget(form.gen_muzical, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.gen_muzical) }}
         </div>
-
+        <div class="form-group image-upload-container">
+            {{ form_label(form.imageFile, 'Artist Photo', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+            <small class="form-help">Upload an image</small>
+            {{ form_errors(form.imageFile) }}
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
 
         {{ form_end(form) }}

@@ -117,6 +117,10 @@
             <span class="detail-label">Price:</span>
             <span class="price-badge">{{ festival.price }} lei</span>
         </div>
+        <div class="detail-row">
+            <span class="detail-label">Tickets: </span>
+            <span class="price-badge">{{ festival.numberTickets }} </span>
+        </div>
     </div>
 
     <div class="artists-section">
@@ -152,6 +156,12 @@
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="btn btn-primary">Delete</button>
         </form>
+            {% if is_granted('ROLE_ADMIN') %}
+                <button type="button" class="btn btn-primary"
+                        onclick="window.location.href='{{ path('app_festival_artist_add', {'id': festival.id}) }}'">
+                    Add tickets
+                </button>
+            {% endif %}
         {% endif %}
     </div>
 </div>

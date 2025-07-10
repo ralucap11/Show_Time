@@ -62,11 +62,15 @@
         <div class="form-group">
             {{ form_label(form.start_date) }}
             {{ form_widget(form.start_date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.start_date) }}
+
         </div>
 
         <div class="form-group">
             {{ form_label(form.end_date) }}
             {{ form_widget(form.end_date, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.end_date) }}
+
         </div>
 
         <div class="form-group">
@@ -78,6 +82,11 @@
             {{ form_label(form.price) }}
             {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
             {{ form_errors(form.price) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.numberTickets) }}
+            {{ form_widget(form.numberTickets, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.numberTickets) }}
         </div>
 
         <div class="d-flex justify-content-center mt-4">

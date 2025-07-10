@@ -7,11 +7,14 @@ use App\Entity\Artist;
 use App\Repository\ArtistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\ArtystType;
+
+
 
 final class ArtistController extends AbstractController
 {
@@ -24,27 +27,40 @@ final class ArtistController extends AbstractController
             'artists' => $artists,
         ]);
     }
-    #[Route('/artist/add_new_artist', name: 'app_artist_add_new', methods: ['GET', 'POST'])]
-    public function add(Request $request,EntityManagerInterface $entityManager): Response
+    #[Route('/artist/add_new_artist', name: 'app_artist_add_new')]
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
-
-        $task = new Artist();
-        $form = $this->createFormBuilder($task)
-            ->add('nume', TextType::class)
-            ->add('gen_muzical',TextType ::class)
-            ->getForm();
+        $artist = new Artist();
+        $form = $this->createForm(ArtystType::class, $artist);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-            $entityManager->persist($task);
+            /** @var UploadedFile $imageFile */
+            $imageFile = $form->get('imageFile')->getData();
+
+            if ($imageFile) {
+                $newFilename = uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('artist_images_directory'),
+                        $newFilename
+                    );
+                    $artist->setImageFile($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'There was a problem uploading your image');
+                }
+            }
+
+            $entityManager->persist($artist);
             $entityManager->flush();
+
             return $this->redirectToRoute('app_festival_index');
-
         }
-        return $this->render('artist/add.html.twig', [
-            'form' => $form,
 
+        return $this->render('artist/add.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

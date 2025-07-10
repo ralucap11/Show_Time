@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserDetails;
 use App\Form\RegistrationForm;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,8 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $userDetails = new UserDetails();   //for the age field
+        $user->setUserDetails($userDetails);
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
 

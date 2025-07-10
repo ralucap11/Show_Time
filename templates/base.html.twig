@@ -70,14 +70,20 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto fs-5">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/festival">Festival</a>
                 </li>
+                {% if  is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a class="nav-link" href="/user">User</a>
                 </li>
+                    {% elseif is_granted('ROLE_USER') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account">User</a>
+                        </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="/artist">Artists</a>
                 </li>
@@ -85,12 +91,8 @@
         </div>
     </div>
 </nav>
-
-
 <body>
-{#<header>#}
-{#    {{ render(controller('App\\Controller\\SearchController::index')) }}#}
-{#</header>#}
+
 
 
 {% block body %}{% endblock %}

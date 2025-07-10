@@ -29,6 +29,9 @@ class Artist
     #[ORM\Column(length: 30)]
     private ?string $gen_muzical = null;
 
+    #[ORM\Column(name: 'imageFile', type: 'string', length: 100, nullable: true)]
+    private ?string $imageFile = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,5 +64,16 @@ class Artist
     public function getFestivals(): Collection
     {
         return $this->festivals;
+    }
+
+    public function getImageFile(): ?string
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?string $imageFile): self
+    {
+        $this->imageFile = $imageFile;
+        return $this;
     }
 }

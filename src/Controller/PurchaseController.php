@@ -10,6 +10,7 @@ use App\Repository\PurchaseRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -53,17 +54,26 @@ final class PurchaseController extends AbstractController
     }
 
     #[Route('/purchase/create/{festival_id}', name: 'app_purchase_create', methods: ['GET'])]
-    public function create(int $festival_id, EntityManagerInterface $em, FestivalRepository $festivalRepo): Response {
+    public function create(int $festival_id, EntityManagerInterface $em, FestivalRepository $festivalRepo, Request $request): Response {
         $festival = $festivalRepo->find($festival_id);
-
+        $quantity = $request->query->getInt('quantity', 1);
         if (!$festival) {
             throw $this->createNotFoundException('Festival not found');
         }
+
+        if ($quantity >$festival->getNumberTickets()) {
+            $this->addFlash('error', 'No tickets available for this festival!');
+            return $this->redirectToRoute('app_festival_index');
+        }
+
 
         $purchase = new Purchase();
         $purchase->setFestival($festival);
         $purchase->setUser($this->getUser());
         $purchase->setPurchaseDate(new \DateTime());
+        $purchase->setTickets($quantity);
+
+        $festival->setNumberTickets($festival->getNumberTickets() - $quantity);  //festival ticket count
 
         $em->persist($purchase);
         $em->flush();

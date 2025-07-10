@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
-
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: FestivalRepository::class)]
+#[Assert\Callback('validateDates')]
+
 class Festival
 {
     #[ORM\Id]
@@ -23,14 +26,19 @@ class Festival
     private ?string $locatie = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\GreaterThanOrEqual('today', message: 'Start date cannot be in the past.')]
     private ?DateTimeInterface $start_date = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\GreaterThanOrEqual('today', message: 'End date cannot be in the past.')]
     private ?DateTimeInterface $end_date = null;
 
     #[ORM\Column]
     private ?int $price = null;
 
+    #[ORM\Column(name: 'numberTickets')]
+    #[Assert\PositiveOrZero(message: 'Capacity must be 0 or more')]
+    private ?int $numberTickets= null;
 
     #[ORM\OneToMany(mappedBy: 'festival', targetEntity: FestivalArtist::class, orphanRemoval: true)]
     private Collection $festivalArtists;
@@ -106,9 +114,30 @@ class Festival
         return $this->festivalArtists;
     }
 
+    public function getNumberTickets(): ?int
+    {
+        return $this->numberTickets;
+    }
+
+    public function setNumberTickets(?int $numberTickets): static
+    {
+        $this->numberTickets = $numberTickets;
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->nume ?? '';  //for the error->Object of class Proxies\__CG__\App\Entity\Festival could not be converted to string
+    }
+
+
+    public function validateDates(ExecutionContextInterface $context): void
+    {
+        if ($this->start_date && $this->end_date && $this->start_date >= $this->end_date) {
+            $context->buildViolation('Start date must be before end date!')
+                ->atPath('start_date')
+                ->addViolation();
+        }
     }
 
 }
