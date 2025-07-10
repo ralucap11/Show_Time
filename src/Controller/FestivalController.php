@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Festival;
+use App\Form\ArtystType;
 use App\Repository\FestivalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -94,6 +95,7 @@ final class FestivalController extends AbstractController
         ]);
 
     }
+
 
     #[Route('/festival/{id}/edit', name: 'app_festival_edit')]
     public function edit(Festival $festival, Request $request, EntityManagerInterface $entityManager): Response

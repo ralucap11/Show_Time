@@ -4,8 +4,10 @@ namespace App\Controller;
 
 
 use App\Entity\Artist;
+use App\Entity\Festival;
 use App\Repository\ArtistRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -56,12 +58,30 @@ final class ArtistController extends AbstractController
             $entityManager->persist($artist);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_festival_index');
+            return $this->redirectToRoute('app_artist_index');
         }
 
         return $this->render('artist/add.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/artist', name: 'app_artist_index')]
+    public function list(Request $request, PaginatorInterface $paginator,EntityManagerInterface $entityManager): Response
+    {
+        $queryBuilder = $entityManager->getRepository(Artist::class)->createQueryBuilder('e');
+
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            6
+        );
+
+        return $this->render('artist/index.html.twig', [
+            'pagination' => $pagination,
+            'artists' => $pagination,
+        ]);
+
     }
 
     #[Route('/artist/{id}', name: 'app_artist_show')]

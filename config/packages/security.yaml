@@ -37,11 +37,12 @@ security:
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/register$, roles: PUBLIC_ACCESS }
         - { path: ^/user, roles: [ ROLE_ADMIN, ROLE_USER ] }
-        - { path: ^/home, roles: [ ROLE_ADMIN, ROLE_USER ] }
         - { path: ^/festival/add_new_festival, roles: ROLE_ADMIN }
         - { path: ^/festival, roles: [ ROLE_ADMIN, ROLE_USER ] }
         - { path: ^/artist, roles: [ ROLE_ADMIN, ROLE_USER ] }
         - { path: ^/purchase, roles: ROLE_USER }
+        - { path: ^/, roles: [ ROLE_ADMIN, ROLE_USER ] }
+
 
 
 

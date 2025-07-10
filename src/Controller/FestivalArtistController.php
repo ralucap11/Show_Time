@@ -36,35 +36,35 @@ final class FestivalArtistController extends AbstractController
 //        return $this->redirectToRoute('app_festival_index');
 //
 //    }
-#[Route('festival/artist/{id}/add', name: 'app_festival_artist_add')]
-public function add(Festival $festival, EntityManagerInterface $entityManager, Request $request): Response
-{
-     $festivalArtist = new FestivalArtist();
-     $festivalArtist->setFestival($festival);
-     $form = $this->createFormBuilder($festivalArtist)
-         ->add('festival', EntityType::class, [
-             'class' => Festival::class,
-             'choice_label' => 'nume',
-             'placeholder' => 'Choose Festival',
-         ])
-         ->add('artist', EntityType::class, [
-             'class' => Artist::class,
-             'choice_label' => 'nume',
-             'placeholder' => 'Choose Artist',
-         ])
-         ->getForm();
-     $form->handleRequest($request);
-     if ($form->isSubmitted() && $form->isValid()) {
-         $entityManager->persist($festivalArtist);
-         $entityManager->flush();
-         return $this->redirectToRoute('app_festival_show', [
-             'id' => $festival->getId(),
-         ]);
-     }
-     return $this->render('festival_artist/new.html.twig', [
-         'form' => $form->createView(),
-     ]);
-}
+    #[Route('festival/artist/{id}/add', name: 'app_festival_artist_add')]
+    public function add(Festival $festival, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $festivalArtist = new FestivalArtist();
+        $festivalArtist->setFestival($festival);
+        $form = $this->createFormBuilder($festivalArtist)
+            ->add('festival', EntityType::class, [
+                'class' => Festival::class,
+                'choice_label' => 'nume',
+                'placeholder' => 'Choose Festival',
+            ])
+            ->add('artist', EntityType::class, [
+                'class' => Artist::class,
+                'choice_label' => 'nume',
+                'placeholder' => 'Choose Artist',
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($festivalArtist);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_festival_show', [
+                'id' => $festival->getId(),
+            ]);
+        }
+        return $this->render('festival_artist/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
 
 }

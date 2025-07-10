@@ -3,14 +3,13 @@
 {% block stylesheets %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
-        .body {
+        .body{
             background-image: url("https://i.pinimg.com/736x/c6/f6/91/c6f691da74c3b637435b1e14099edc49.jpg");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            min-height: 100vh;
+            min-height:  100vh;
         }
         .title {
             font-family: 'Quicksand', sans-serif;
@@ -18,6 +17,7 @@
             font-size: 72px;
             text-align: center;
             transform: rotate(-2deg);
+            padding-top:20px;
         }
         .btn-primary {
             display: inline-block;
@@ -37,7 +37,7 @@
             text-align: center;
             padding: 16px 14px 18px;
             color: black;
-            background-color: #6D28D9;
+            background-color: #C0C9EE;
             height: 48px;
         }
         .button-group {
@@ -53,14 +53,14 @@
 
 {% block body %}
     <div class="body">
-        <h1 class="title">Home page</h1>
+        <h1 class="title">Homepage</h1>
         <div class="button-group">
+            {% set userPath = '#' %}
             {% if is_granted('ROLE_ADMIN') %}
                 {% set userPath = path('app_user_index') %}
             {% elseif is_granted('ROLE_USER') %}
                 {% set userPath = path('app_user_account') %}
             {% endif %}
-
             <button class="btn-primary" onclick="window.location.href='{{ userPath }}'">User</button>
             <button class="btn-primary" onclick="window.location.href='{{ path('app_festival_index') }}'">Festival</button>
             <button class="btn-primary" onclick="window.location.href='{{ path('app_artist_index') }}'">Artist</button>

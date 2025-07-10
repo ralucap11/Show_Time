@@ -89,10 +89,10 @@
             <label class="detail-label">Role:</label>
             {{ form_widget(form.userDetails.rol, {'attr': {'class': 'form-select'}}) }}
         </div>
-
+         <div class="text-center">
         <button type="submit" class="btn btn-primary mt-3">Save</button>
         <a href="{{ path('app_festival_index') }}" class="btn btn-secondary mt-3">Back to Festival</a>
-
+         </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

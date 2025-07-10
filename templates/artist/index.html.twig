@@ -18,97 +18,115 @@
         .title{
             font-family: 'Quicksand', sans-serif;
             font-weight: 800;
-            font-size: 72px;
+            font-size: 100px;
             text-align: center;
             transform: rotate(-2deg);
         }
-        .widgetArtistListHero{
-            width: 100%;
+        /*.widgetArtistListHero{*/
+        /*    width: 100%;*/
+        /*    display:flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    position: relative;*/
+        /*    gap: 68px;*/
+        /*    padding: 38px 16px 8px;*/
+        /*}*/
+        /*widget-root *{*/
+        /*    box-sizing: border-box;*/
+        /*}*/
+        .artist-container {
             display:flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            gap: 68px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 100%;
             padding: 38px 16px 8px;
-        }
-        widget-root *{
             box-sizing: border-box;
         }
-        .artist-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
         .artist-card {
-            width: 200px;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            height: 400px;
+            flex: 0 0 calc(33.33% - 30px);
+            max-width: calc(33.33% - 30px);
+            border: 50px;
             border-radius: 15px;
-            border: 3px solid transparent;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 20px;
             position: relative;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
             box-shadow: 0 4px 15px;
 
         }
         .artist-card:hover {
-            transform: translateY(-10px);
-            /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);*/
+            /*transform: translateY(-10px); so it doesn't move*/
         }
         .artist-card a {
             color: inherit;
             text-decoration: none;
         }
-        .artist-image{
-            width:100px;
-            height:100%;
+        .artist-image {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0;
-            left:0;
-            z-index: -1;
-            opacity: 0.8;
+            left: 0;
+            z-index: 0;
+            opacity: 0.81; /* how much a picture is visible */
         }
 
-        .artist-name{
+        .artist-name {
             font-family: 'Quicksand', sans-serif;
             font-weight: 700;
             font-size: 22px;
             color: white;
             text-transform: uppercase;
             text-align: left;
-            padding: 0 10px;
-            margin-bottom: 10px;
+            z-index: 1;
+            position: relative;
+            padding: 10px 15px;
+            border-radius: 25px;
+            outline: black  10px;
         }
 
-        .add-artist-btn {
-            display: block;
-            margin: 40px auto;
-            padding: 12px 35px;
-            font-size: 18px;
-            font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            color: white;
-            transition: all 0.3s ease;
+        .btn-primary {
+            display: inline-block;
+            outline: none;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            border-radius: 500px;
+            border: 1px solid transparent;
+            letter-spacing: 2px;
+            min-width: 160px;
+            text-transform: uppercase;
+            white-space: normal;
+            font-weight: 700;
+            text-align: center;
+            padding: 16px 14px 18px;
+            color: black;
+            background-color: #C0C9EE;
+            height: 50px;
+            margin: 40px auto 0;
+            position: relative;
+            top: 70%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
-        .add-artist-btn:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-        }
+
         .artist-name {
             font-size: 18px;
         }
         .title {
-            font-size: 48px;
+            font-size: 55px;
+        }
+        .pagination {
+            display: flex;
+            margin-top: 30px;
+            gap: 2px;
         }
 
     </style>
@@ -117,18 +135,17 @@
  {%  block body %}
      <div class="body">
          <h1 class="title">Lineup</h1>
-
          <div class="artist-container">
              {% for artist in artists %}
                  <div class="artist-card">
                      <a href="{{ path('app_artist_show', {id: artist.id}) }}">
                          {% if artist.imageFile %}
-                             <img src="{{ artist.imageFile }}" alt="{{ artist.nume }}" class="artist-image">
+                             <img src="{{ asset('uploads/artists/' ~ artist.imageFile) }}" alt="{{ artist.nume }}" class="artist-image">
                          {% else %}
                              <img src="https://via.placeholder.com/200x250/333/cccccc?text=NO+IMAGE" alt="No image" class="artist-image">
                          {% endif %}
-                         <div class="artist-name">{{ artist.nume }}</div>
                      </a>
+                     <div class="artist-name">{{ artist.nume }}</div>
                  </div>
              {% else %}
                  <div class="artist-card">
@@ -138,9 +155,13 @@
          </div>
 
          {% if is_granted('ROLE_ADMIN') %}
-             <button type="button" class="btn add-artist-btn" onclick="window.location.href='{{ path('app_artist_add_new') }}'">
+             <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_artist_add_new') }}'">
                  Add artist
              </button>
          {% endif %}
+
+         <div class="pagination">
+             {{ knp_pagination_render(pagination) }}
+         </div>
      </div>
 {% endblock %}

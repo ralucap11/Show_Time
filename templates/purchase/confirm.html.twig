@@ -1,36 +1,59 @@
-
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .confirm-container {
-            max-width: 600px;
-            margin: 60px auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
+        body {
+            background-color: #f8f9fa;
             font-family: 'Quicksand', sans-serif;
+            background-image: url("https://i.pinimg.com/736x/c6/f6/91/c6f691da74c3b637435b1e14099edc49.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height:  100vh;
         }
+
+        .confirm-container {
+            max-width: 800px;
+            margin: 150px auto;
+            background: white;
+            border-radius: 25px;
+            padding: 50px 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
         .confirm-header {
             font-size: 2rem;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             font-weight: bold;
+            color: black;
         }
-        .confirm-details {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+
+        .confirm-details p {
+            margin-bottom: 10px;
         }
-        .btn-confirm {
+
+        .form-group label {
+            margin-bottom: 8px;
+        }
+
+        .btn-primary {
             background-color: #6D28D9;
-            color: white;
-            font-weight: bold;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-top: 20px;
         }
-        .btn-confirm:hover {
+        .btn-primary:hover {
             background-color: #5b21b6;
+        }
+
+        #totalPrice {
+            margin-top: 10px;
+            font-weight: bold;
         }
     </style>
 {% endblock %}
@@ -39,15 +62,16 @@
     <div class="confirm-container">
         <h2 class="confirm-header">Confirm Purchase</h2>
 
-        <div class="confirm-details">
+        <div class="confirm-details mb-4">
             <p><strong>Festival:</strong> {{ festival.nume }}</p>
             <p><strong>Location:</strong> {{ festival.locatie }}</p>
             <p><strong>Date:</strong> {{ festival.startDate|date('d-m-Y') }} - {{ festival.endDate|date('d-m-Y') }}</p>
             <p><strong>Price:</strong> {{ festival.price }} lei</p>
         </div>
+
         <form method="GET" action="{{ path('app_purchase_create', {'festival_id': festival.id}) }}" onsubmit="return validateQuantity()">
-            <div class="form-group">
-                <label for="quantity"><strong>Number of Tickets:</strong></label>
+            <div class="mb-3">
+                <label for="quantity" class="form-label"><strong>Number of Tickets:</strong></label>
                 <input type="number"
                        id="quantity"
                        name="quantity"
@@ -57,10 +81,14 @@
                        value="1"
                        required
                        onchange="updateTotalPrice({{ festival.price }})">
-                <p id="totalPrice"><strong>Total:</strong> {{ festival.price }} lei</p>
+                <div id="totalPrice"><strong>Total:</strong> {{ festival.price }} lei</div>
             </div>
-            <button type="submit" class="btn btn-confirm d-block mx-auto">Confirm Purchase</button>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Confirm Purchase</button>
+            </div>
         </form>
+
         <script>
             function updateTotalPrice(pricePerTicket) {
                 const quantity = document.getElementById('quantity').value;
